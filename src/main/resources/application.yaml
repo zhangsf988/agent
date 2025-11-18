@@ -8,3 +8,32 @@ spring:
       chat:
         options:
           model: qwen-max-latest
+          temperature: 0.7
+      embedding:
+        options:
+          model: qwen-embedding-v1  # Qwen3 Embedding 模型名（固定）
+          dimension: 1024  # 向量维度（必须与 Pinecone 索引维度一致）
+          timeout: 30000  # 超时时间（毫秒）
+    vectorstore:
+      pinecone:
+        api-key: ${PINECONE_API_KEY}
+        index-name: spring-ai
+        store:
+          topK: 3  # 默认检索 Top 3 相关文档
+          similarityThreshold: 0.7  # 相似度阈值（过滤低相关文档）
+    chat-memory:
+      jdbc:
+        initialize-schema: always  # 总是初始化数据库表结构
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/agent?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root  # 你的 MySQL 用户名
+    password: root  # 你的 MySQL 密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update  # 自动创建/更新 MySQL 表（开发环境用，生产用 validate）
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
