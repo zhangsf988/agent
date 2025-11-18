@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 命名空间对应Mapper接口全路径 -->
+<mapper namespace="com.zsf.agent.mapper.SpringAiChatMemoryMapper">
+
+    <!-- 结果集映射：数据库字段（下划线）→ 实体类属性（驼峰） -->
+    <resultMap id="BaseResultMap" type="com.zsf.agent.entity.ChatMemoryEntry">
+        <result column="conversation_id" property="conversationId"/>
+        <result column="content" property="content"/>
+        <result column="type" property="type"/>
+        <result column="timestamp" property="timestamp"/>
+    </resultMap>
+
+    <!-- 新增聊天记录 -->
+    <insert id="insert" parameterType="com.zsf.agent.entity.ChatMemoryEntry">
+        INSERT INTO SPRING_AI_CHAT_MEMORY (
+            conversation_id,
+            content,
+            type,
+            timestamp
+        ) VALUES (
+                     #{conversationId},
+                     #{content},
+                     #{type},
+                     #{timestamp}
+                 )
+    </insert>
+
+    <!-- 根据会话ID查询聊天记录（利用索引优化查询） -->
+    <select id="selectByConversationId" resultMap="BaseResultMap">
+        SELECT
+            conversation_id,
+            content,
+            type,
+            timestamp
+        FROM
+            SPRING_AI_CHAT_MEMORY
+        WHERE
+            conversation_id = #{conversationId}
+        ORDER BY
+            timestamp ASC  -- 按时间升序排列（先发生的在前）
+    </select>
+
+    <!-- 根据会话ID删除聊天记录 -->
+    <delete id="deleteByConversationId">
+        DELETE FROM SPRING_AI_CHAT_MEMORY
+        WHERE conversation_id = #{conversationId}
+    </delete>
+
+</mapper>

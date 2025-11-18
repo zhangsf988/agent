@@ -24,6 +24,13 @@ spring:
     chat-memory:
       jdbc:
         initialize-schema: always  # 总是初始化数据库表结构
+    chat:
+      memory:
+        repository:
+          jdbc:
+            schema: agent
+            platform: mysql
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/agent?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -37,3 +44,8 @@ spring:
       properties:
         hibernate:
           format_sql: true
+  sql:
+    init:
+      mode: always
+      platform: mysql
+      schema-locations: classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-mysql.sql
