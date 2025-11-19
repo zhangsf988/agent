@@ -4,7 +4,7 @@ spring:
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
       chat:
         options:
           model: qwen-max-latest
@@ -12,7 +12,7 @@ spring:
       embedding:
         options:
           model: text-embedding-v4
-        base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+#        base-url: https://dashscope.aliyuncs.com/compatible-mode
     vectorstore:
       pinecone:
         api-key: ${PINECONE_API_KEY}
@@ -42,3 +42,8 @@ spring:
       mode: always
       platform: mysql
       schema-locations: classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-mysql.sql
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true

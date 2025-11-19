@@ -34,9 +34,8 @@ public class ClientConfig {
     ChatClient simpleChatClient(){
         return ChatClient.builder(openAiChatModel)
                 .defaultAdvisors(
-                        MessageChatMemoryAdvisor.builder(chatMemory).build(), // chat-memory advisor
-                        QuestionAnswerAdvisor.builder(vectorStore)
-                                .build() // RAG advisor
+                        MessageChatMemoryAdvisor.builder(chatMemory).build() // chat-memory advisor
+//                        QuestionAnswerAdvisor.builder(vectorStore).build() // RAG advisor
                 )
                 .build();
     }
