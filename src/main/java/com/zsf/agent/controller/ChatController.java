@@ -18,8 +18,8 @@ public class ChatController {
     ChatService chatService;
 
     @GetMapping(value = "/simpleChat", produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
-    public Flux<String> simpleChat(String userMessage){
-        Flux<String> stringFlux = chatService.simpleChat(userMessage);
+    public Flux<String> simpleChat(String userMessage, String conversationId){
+        Flux<String> stringFlux = chatService.simpleChat(userMessage, conversationId);
         return stringFlux;
     }
 

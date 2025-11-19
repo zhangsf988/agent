@@ -9,6 +9,7 @@ import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryReposito
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
+import org.springframework.ai.openai.OpenAiEmbeddingOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,8 @@ public class AiConfig {
     @Value("${spring.ai.openai.base-url}")
     String baseUrl;
 
+    @Value("${spring.ai.openai.embedding.options.model")
+    String embeddingModel;
     @Bean
     ChatMemory chatMemory(JdbcChatMemoryRepository jdbcChatMemoryRepository){
         return MessageWindowChatMemory.builder()
@@ -32,12 +35,14 @@ public class AiConfig {
                 .build();
     }
 
-    @Bean
-    public EmbeddingModel embeddingModel() {
-        OpenAiApi openAiApi = new OpenAiApi.Builder()
-                .baseUrl(baseUrl)
-                .apiKey(apiKey)
-                .build();
-        return new OpenAiEmbeddingModel(openAiApi);
-    }
+//    @Bean
+//    public EmbeddingModel embeddingModel() {
+//        OpenAiApi openAiApi = new OpenAiApi.Builder()
+//                .baseUrl(baseUrl)
+//                .apiKey(apiKey)
+//                .build();
+//        OpenAiEmbeddingOptions openAiEmbeddingOptions = new OpenAiEmbeddingOptions();
+//        openAiEmbeddingOptions.setModel(embeddingModel);
+//        return new OpenAiEmbeddingModel(openAiApi, openAiEmbeddingOptions);
+//    }
 }

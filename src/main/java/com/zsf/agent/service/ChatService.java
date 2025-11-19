@@ -1,6 +1,7 @@
 package com.zsf.agent.service;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.api.BaseChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -21,10 +22,12 @@ public class ChatService {
     @Autowired
     EmbeddingModel embeddingModel;
 
-    public Flux<String> simpleChat(String userMessage){
+    public Flux<String> simpleChat(String userMessage, String conversationId){
+        float[] embed = embeddingModel.embed(userMessage);
         Flux<String> call = simpleChatClient.prompt()
                 .system("你是一个智能助手,帮助用户解答问题")
                 .user(userMessage)
+                .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, conversationId) )
                 .stream()
                 .content();
         return call;
