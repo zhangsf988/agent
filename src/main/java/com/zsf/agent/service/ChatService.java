@@ -22,9 +22,9 @@ public class ChatService {
     EmbeddingModel embeddingModel;
 
     public Flux<String> simpleChat(String userMessage){
-        UserMessage message = new UserMessage(userMessage);
         Flux<String> call = simpleChatClient.prompt()
-                .messages(message)
+                .system("你是一个智能助手,帮助用户解答问题")
+                .user(userMessage)
                 .stream()
                 .content();
         return call;

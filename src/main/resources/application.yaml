@@ -11,9 +11,8 @@ spring:
           temperature: 0.7
       embedding:
         options:
-          model: qwen-embedding-v1  # Qwen3 Embedding 模型名（固定）
-          dimension: 1024  # 向量维度（必须与 Pinecone 索引维度一致）
-          timeout: 30000  # 超时时间（毫秒）
+          model: text-embedding-v4
+        base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
     vectorstore:
       pinecone:
         api-key: ${PINECONE_API_KEY}
@@ -24,12 +23,6 @@ spring:
     chat-memory:
       jdbc:
         initialize-schema: always  # 总是初始化数据库表结构
-    chat:
-      memory:
-        repository:
-          jdbc:
-            schema: agent
-            platform: mysql
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

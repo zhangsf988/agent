@@ -10,19 +10,19 @@ import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.openai.api.OpenAiApi;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
 
 @Configuration
 public class AiConfig {
 
     @Value("${spring.ai.openai.api-key}")
     String apiKey;
+    
+    @Value("${spring.ai.openai.base-url}")
+    String baseUrl;
 
     @Bean
     ChatMemory chatMemory(JdbcChatMemoryRepository jdbcChatMemoryRepository){
@@ -34,7 +34,10 @@ public class AiConfig {
 
     @Bean
     public EmbeddingModel embeddingModel() {
-        // Can be any other EmbeddingModel implementation.
-        return new OpenAiEmbeddingModel(new OpenAiApi.Builder().apiKey(apiKey).build());
+        OpenAiApi openAiApi = new OpenAiApi.Builder()
+                .baseUrl(baseUrl)
+                .apiKey(apiKey)
+                .build();
+        return new OpenAiEmbeddingModel(openAiApi);
     }
 }
