@@ -15,7 +15,7 @@ public class ChatController {
     @Autowired
     ChatService chatService;
 
-    @PostMapping(value = "/simpleChat", produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
+    @PostMapping(value = "/simpleChat", produces =  "text/stream;charset=UTF-8")
     public Flux<String> simpleChat(@RequestBody SimpleChatRequest simpleChatRequest){
         Flux<String> stringFlux = chatService.simpleChat(simpleChatRequest);
         return stringFlux;

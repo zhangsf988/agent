@@ -26,7 +26,7 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/agent?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/agent?useSSL=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useUnicode=true&allowPublicKeyRetrieval=false&rewriteBatchedStatements=true
     username: root  # 你的 MySQL 用户名
     password: root  # 你的 MySQL 密码
     driver-class-name: com.mysql.cj.jdbc.Driver
