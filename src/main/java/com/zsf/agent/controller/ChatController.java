@@ -1,13 +1,11 @@
 package com.zsf.agent.controller;
 
+import com.zsf.agent.entity.SimpleChatRequest;
 import com.zsf.agent.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -17,9 +15,9 @@ public class ChatController {
     @Autowired
     ChatService chatService;
 
-    @GetMapping(value = "/simpleChat", produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
-    public Flux<String> simpleChat(String userMessage, String conversationId){
-        Flux<String> stringFlux = chatService.simpleChat(userMessage, conversationId);
+    @PostMapping(value = "/simpleChat", produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
+    public Flux<String> simpleChat(@RequestBody SimpleChatRequest simpleChatRequest){
+        Flux<String> stringFlux = chatService.simpleChat(simpleChatRequest);
         return stringFlux;
     }
 
