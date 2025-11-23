@@ -1,6 +1,6 @@
-create table agent.SPRING_AI_CHAT_MEMORY
+create table agent.spring_ai_chat_memory
 (
-    id              int         not null
+    id              varchar(100)       not null
         primary key,
     conversation_id varchar(36) not null,
     content         text        not null,
@@ -10,5 +10,5 @@ create table agent.SPRING_AI_CHAT_MEMORY
 );
 
 create index SPRING_AI_CHAT_MEMORY_CONVERSATION_ID_TIMESTAMP_IDX
-    on agent.SPRING_AI_CHAT_MEMORY (conversation_id, timestamp);
+    on agent.spring_ai_chat_memory (conversation_id, timestamp);
 

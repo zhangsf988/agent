@@ -9,10 +9,8 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.Resource;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -93,7 +91,7 @@ public class AgentChatMemory implements ChatMemory { // 实现 1.0.0 版本 Chat
     @Override
     public List<Message> get(String conversationId) {
         // 从数据库查询指定会话的所有消息，并转换为 Message 对象列表
-        return memoryRepository.findByConversationIdOrderByTimestampAsc(conversationId)
+        return memoryRepository.queryAllByConversationId(conversationId)
                 .stream()
                 .map(this::mapEntityToMessage)
                 .collect(Collectors.toList());
