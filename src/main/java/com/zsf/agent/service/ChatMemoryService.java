@@ -1,6 +1,7 @@
 package com.zsf.agent.service;
 
-import com.zsf.agent.entity.ChatMemoryEntry;
+
+import com.zsf.agent.entity.SpringAiChatMemoryEntity;
 import com.zsf.agent.mapper.SpringAiChatMemoryMapper;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
@@ -21,8 +22,8 @@ public class ChatMemoryService {
      * @param conversationId 会话ID
      * @return 历史消息列表
      */
-    public List<ChatMemoryEntry> getHistory(String conversationId) {
-        return springAiChatMemoryMapper.selectByConversationId(conversationId);
+    public List<SpringAiChatMemoryEntity> getHistory(String conversationId, String functionType) {
+        return springAiChatMemoryMapper.selectByConversationId(conversationId,functionType);
     }
 
     /**

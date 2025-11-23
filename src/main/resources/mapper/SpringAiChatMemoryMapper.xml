@@ -6,25 +6,28 @@
 <mapper namespace="com.zsf.agent.mapper.SpringAiChatMemoryMapper">
 
     <!-- 结果集映射：数据库字段（下划线）→ 实体类属性（驼峰） -->
-    <resultMap id="BaseResultMap" type="com.zsf.agent.entity.ChatMemoryEntry">
+    <resultMap id="BaseResultMap" type="com.zsf.agent.entity.SpringAiChatMemoryEntity">
         <result column="conversation_id" property="conversationId"/>
         <result column="content" property="content"/>
         <result column="type" property="type"/>
         <result column="timestamp" property="timestamp"/>
+        <result column="function_type" property="functionType"/>
     </resultMap>
 
     <!-- 新增聊天记录 -->
-    <insert id="insert" parameterType="com.zsf.agent.entity.ChatMemoryEntry">
+    <insert id="insert" parameterType="com.zsf.agent.entity.SpringAiChatMemoryEntity">
         INSERT INTO SPRING_AI_CHAT_MEMORY (
             conversation_id,
             content,
             type,
-            timestamp
+            timestamp,
+             function_type
         ) VALUES (
                      #{conversationId},
                      #{content},
                      #{type},
-                     #{timestamp}
+                     #{timestamp},
+                      #{functionType}
                  )
     </insert>
 
@@ -38,7 +41,18 @@
         FROM
             SPRING_AI_CHAT_MEMORY
         WHERE
-            conversation_id = #{conversationId}
+            conversation_id = #{conversationId} and  function_type = #{functionType}
+        ORDER BY
+            timestamp ASC  -- 按时间升序排列（先发生的在前）
+    </select>
+
+    <select id="selectChatListByFunctionType" resultMap="BaseResultMap">
+        SELECT
+            dinstinct conversation_id
+        FROM
+            SPRING_AI_CHAT_MEMORY
+        WHERE
+            function_type = #{functionType}
         ORDER BY
             timestamp ASC  -- 按时间升序排列（先发生的在前）
     </select>

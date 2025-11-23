@@ -20,9 +20,9 @@ spring:
         store:
           topK: 3  # 默认检索 Top 3 相关文档
           similarityThreshold: 0.7  # 相似度阈值（过滤低相关文档）
-    chat-memory:
-      jdbc:
-        initialize-schema: always  # 总是初始化数据库表结构
+#    chat-memory:
+#      jdbc:
+#        initialize-schema: always  # 启用自动初始化数据库表结构
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -37,11 +37,11 @@ spring:
       properties:
         hibernate:
           format_sql: true
-  sql:
-    init:
-      mode: always
-      platform: mysql
-      schema-locations: classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-mysql.sql
+#  sql:
+#    init:
+#      mode:   # 启用SQL脚本初始化
+#      platform: mysql
+#      schema-locations: classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-mysql.sql
 server:
   servlet:
     encoding:

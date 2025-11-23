@@ -1,10 +1,14 @@
 package com.zsf.agent.service;
 
+import com.zsf.agent.entity.AgentChatMemory;
 import com.zsf.agent.entity.SimpleChatRequest;
+import com.zsf.agent.entity.SpringAiChatMemoryEntity;
+import com.zsf.agent.repository.SpringAiChatMemoryRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.BaseChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
@@ -21,20 +25,29 @@ public class ChatService {
     @Autowired
     ChatClient simpleChatClient;
     @Autowired
-    ChatMemory chatMemory;
+    AgentChatMemory agentChatMemory;
     @Autowired
     EmbeddingModel embeddingModel;
 
     public Flux<String> simpleChat(SimpleChatRequest simpleChatRequest){
         System.out.println("Message: " + simpleChatRequest.getMessage());
         System.out.println("Memory ID: " + simpleChatRequest.getMemoryId());
+        System.out.println("Function Type: " + simpleChatRequest.getFunctionType());
+        // 使用Spring注入的实例，而不是手动创建新实例
+        agentChatMemory.add(simpleChatRequest.getMemoryId(), simpleChatRequest.getFunctionType(),List.of(new UserMessage(simpleChatRequest.getMessage())));
+        List<Message> messages = agentChatMemory.get(simpleChatRequest.getMemoryId());
 //        float[] embed = embeddingModel.embed(userMessage);
         Flux<String> call = simpleChatClient.prompt()
                 .system("你是一个智能助手,帮助用户解答问题")
+                .messages(messages)
                 .user(simpleChatRequest.getMessage())
                 .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, simpleChatRequest.getMemoryId()) )
                 .stream()
                 .content();
         return call;
+    }
+    
+    public List<Message> getHistory(String conversationId, String functionType) {
+        return agentChatMemory.get(conversationId);
     }
 }

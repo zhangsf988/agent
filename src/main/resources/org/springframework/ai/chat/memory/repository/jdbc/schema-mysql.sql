@@ -1,7 +1,14 @@
-CREATE TABLE IF NOT EXISTS SPRING_AI_CHAT_MEMORY (
-  `conversation_id` VARCHAR(36) NOT NULL,
-  `content` TEXT NOT NULL,
-  `type` VARCHAR(10) NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL,
-  INDEX `SPRING_AI_CHAT_MEMORY_CONVERSATION_ID_TIMESTAMP_IDX` (`conversation_id`, `timestamp`)
+create table agent.SPRING_AI_CHAT_MEMORY
+(
+    id              int         not null
+        primary key,
+    conversation_id varchar(36) not null,
+    content         text        not null,
+    type            varchar(10) not null,
+    timestamp       timestamp   not null,
+    function_type   varchar(30) not null comment '功能'
 );
+
+create index SPRING_AI_CHAT_MEMORY_CONVERSATION_ID_TIMESTAMP_IDX
+    on agent.SPRING_AI_CHAT_MEMORY (conversation_id, timestamp);
+
