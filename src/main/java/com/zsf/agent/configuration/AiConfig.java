@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
@@ -25,7 +26,7 @@ public class AiConfig {
     @Value("${spring.ai.openai.base-url}")
     String baseUrl;
 
-    @Value("${spring.ai.openai.embedding.options.model")
+    @Value("${spring.ai.openai.embedding.options.model}")
     String embeddingModel;
 //
 //    @Autowired
@@ -36,14 +37,14 @@ public class AiConfig {
 //        return agentChatMemory;
 //    }
 
-//    @Bean
-//    public EmbeddingModel embeddingModel() {
-//        OpenAiApi openAiApi = new OpenAiApi.Builder()
-//                .baseUrl(baseUrl)
-//                .apiKey(apiKey)
-//                .build();
-//        OpenAiEmbeddingOptions openAiEmbeddingOptions = new OpenAiEmbeddingOptions();
-//        openAiEmbeddingOptions.setModel(embeddingModel);
-//        return new OpenAiEmbeddingModel(openAiApi, openAiEmbeddingOptions);
-//    }
+    @Bean
+    public EmbeddingModel embeddingModel() {
+        OpenAiApi openAiApi = new OpenAiApi.Builder()
+                .baseUrl(baseUrl)
+                .apiKey(apiKey)
+                .build();
+        OpenAiEmbeddingOptions openAiEmbeddingOptions = new OpenAiEmbeddingOptions();
+        openAiEmbeddingOptions.setModel(embeddingModel);
+        return new OpenAiEmbeddingModel(openAiApi, MetadataMode.EMBED,openAiEmbeddingOptions);
+    }
 }

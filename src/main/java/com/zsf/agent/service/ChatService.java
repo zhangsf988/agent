@@ -37,10 +37,6 @@ public class ChatService {
     public Flux<String> simpleChat(SimpleChatRequest simpleChatRequest){
         System.out.println("Message: " + simpleChatRequest.getMessage());
         System.out.println("Memory ID: " + simpleChatRequest.getMemoryId());
-        float[] embed = embeddingModel.embed(simpleChatRequest.getMessage());
-        System.out.println("embed:"+ JSONObject.toJSONString(embed));
-        List<Document> documents = vectorStore.similaritySearch(simpleChatRequest.getMessage());
-        System.out.println("documents:"+ JSONObject.toJSONString(documents));
         Flux<String> call = simpleChatClient.prompt()
                 .user(simpleChatRequest.getMessage())
                 .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, simpleChatRequest.getMemoryId()))
