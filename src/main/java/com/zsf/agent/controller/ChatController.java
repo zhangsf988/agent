@@ -22,6 +22,7 @@ public class ChatController {
     @PostMapping(value = "/simpleChat", produces =  "text/stream;charset=UTF-8")
     public Flux<String> simpleChat(@RequestBody SimpleChatRequest simpleChatRequest){
         Flux<String> stringFlux = chatService.simpleChat(simpleChatRequest);
+        System.out.println(stringFlux.toString());
         return stringFlux;
     }
 
