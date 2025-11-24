@@ -25,17 +25,12 @@ public class ChatService {
     ChatClient simpleChatClient;
     @Autowired
     AgentChatMemory agentChatMemory;
-    @Autowired
-    EmbeddingModel embeddingModel;
+
 
     public Flux<String> simpleChat(SimpleChatRequest simpleChatRequest){
         System.out.println("Message: " + simpleChatRequest.getMessage());
         System.out.println("Memory ID: " + simpleChatRequest.getMemoryId());
-        System.out.println("Function Type: " + simpleChatRequest.getFunctionType());
-        // 使用Spring注入的实例，而不是手动创建新实例
-        agentChatMemory.add(simpleChatRequest.getMemoryId(), simpleChatRequest.getFunctionType(),new UserMessage(simpleChatRequest.getMessage()));
         List<Message> messages = agentChatMemory.get(simpleChatRequest.getMemoryId());
-//        float[] embed = embeddingModel.embed(userMessage);
         Flux<String> call = simpleChatClient.prompt()
                 .system("你是一个智能助手,帮助用户解答问题")
                 .messages(messages)
@@ -46,7 +41,7 @@ public class ChatService {
         return call;
     }
     
-    public List<Message> getHistory(String conversationId, String functionType) {
+    public List<Message> getHistory(String conversationId) {
         return agentChatMemory.get(conversationId);
     }
 }

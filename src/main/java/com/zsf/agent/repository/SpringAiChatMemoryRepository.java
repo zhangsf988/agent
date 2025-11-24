@@ -19,11 +19,6 @@ public interface SpringAiChatMemoryRepository extends JpaRepository<SpringAiChat
      */
     List<SpringAiChatMemoryEntity> findByConversationIdOrderByTimestampAsc(String conversationId);
 
-    /**
-     * 扩展方法：按会话编号 + 功能类型查询（精准筛选场景）
-     */
-    List<SpringAiChatMemoryEntity> findByConversationIdAndFunctionTypeOrderByTimestampAsc(
-            String conversationId, String functionType);
 
     /**
      * 清空某会话的所有记忆（按 conversation_id 批量删除）

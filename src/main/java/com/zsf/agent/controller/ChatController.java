@@ -29,8 +29,8 @@ public class ChatController {
     }
 
     @PostMapping(value = "/getHistory", produces =  "text/stream;charset=UTF-8")
-    public List<Message> getHistory(@RequestParam String conversationId, @RequestParam String functionType){
-    	return chatService.getHistory(conversationId,functionType);
+    public List<Message> getHistory(@RequestParam String conversationId){
+    	return chatService.getHistory(conversationId);
     }
 
 }

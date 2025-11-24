@@ -20,9 +20,8 @@ spring:
         store:
           topK: 3  # 默认检索 Top 3 相关文档
           similarityThreshold: 0.7  # 相似度阈值（过滤低相关文档）
-#    chat-memory:
-#      jdbc
-#        enabled: false  # 禁用 Spring AI 的 JDBC 聊天记忆功能
+
+
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

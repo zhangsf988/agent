@@ -35,7 +35,4 @@ public class SpringAiChatMemoryEntity  {
     @CreationTimestamp // 插入时自动填充当前时间，无需手动设置
     private LocalDateTime timestamp;
 
-    // 功能类型（非空，匹配表约束）
-    @Column(name = "function_type", nullable = false, length = 30)
-    private String functionType;
 }

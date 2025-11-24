@@ -22,14 +22,6 @@ public class ClientConfig {
     AgentChatMemory agentChatMemory;
     @Autowired
     VectorStore vectorStore;
-    @Autowired
-    EmbeddingModel embeddingModel;
-    
-    @Value("${spring.ai.openai.base-url}")
-    private String baseUrl;
-    
-    @Value("${spring.ai.openai.api-key}")
-    private String apiKey;
     
     @Bean
     ChatClient simpleChatClient(){

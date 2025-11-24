@@ -8,52 +8,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.Resource;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-@Data
+@Primary
 public class AgentChatMemory implements ChatMemory { // 实现 1.0.0 版本 ChatMemory 接口
 
     @Autowired
     private SpringAiChatMemoryRepository springAiChatMemoryRepository;
     @Autowired
     SpringAiChatMemoryMapper springAiChatMemoryMapper;
-
-    // ------------------------------ Getter（对外提供） ------------------------------
-    @Getter
-    private final String conversationId; // 会话编号（36位 UUID）
-    @Getter
-    private final String functionType;   // 功能类型（必传，非空）
-
-    // ------------------------------ 构造方法（无变更） ------------------------------
-    /**
-     * 无参构造函数，用于Spring自动装配
-     */
-    public AgentChatMemory() {
-        this.conversationId = null;
-        this.functionType = null;
-    }
-    /**
-     * 发起新会话：自动生成 conversationId，强制传入 functionType（非空）
-     */
-
-    public AgentChatMemory(String functionType) {
-        this.functionType = Objects.requireNonNull(functionType, "functionType 不能为空（表字段非空）");
-        this.conversationId = generateConversationId();
-    }
-
-    /**
-     * 续会话：复用已有 conversationId，强制传入 functionType
-     */
-    public AgentChatMemory(String conversationId, String functionType) {
-        this.functionType = Objects.requireNonNull(functionType, "functionType 不能为空（表字段非空）");
-        this.conversationId = Objects.requireNonNull(conversationId, "conversationId 不能为空");
-    }
-
     // ------------------------------ 核心方法：严格匹配 ChatMemory 接口签名（1.0.0 版本） ------------------------------
     /**
      * 1. 添加消息（接口要求：void add(Message message)）
@@ -67,7 +38,7 @@ public class AgentChatMemory implements ChatMemory { // 实现 1.0.0 版本 Chat
                     entity.setConversationId(conversationId);
                     entity.setType(mapMessageTypeToString(message.getMessageType()));
                     entity.setContent(message.getText());
-                    entity.setFunctionType(this.functionType);
+                    entity.setTimestamp(LocalDateTime.now());
                     return entity;
                 })
                 .collect(Collectors.toList());
@@ -75,21 +46,13 @@ public class AgentChatMemory implements ChatMemory { // 实现 1.0.0 版本 Chat
         springAiChatMemoryRepository.saveAll(entities);
     }
 
-    public void add(String conversationId,String functionType,Message message) {
-        // 基于传入的消息列表，创建数据库实体并保存
-        SpringAiChatMemoryEntity entity = new SpringAiChatMemoryEntity();
-        entity.setConversationId(conversationId);
-        entity.setType(mapMessageTypeToString(message.getMessageType()));
-        entity.setContent(message.getText());
-        entity.setFunctionType(functionType);
-
-        springAiChatMemoryMapper.insert(entity);
-    }
 
     @Override
     public List<Message> get(String conversationId) {
+        SpringAiChatMemoryEntity springAiChatMemoryEntity = new SpringAiChatMemoryEntity();
+        springAiChatMemoryEntity.setConversationId(conversationId);
         // 从数据库查询指定会话的所有消息，并转换为 Message 对象列表
-        return springAiChatMemoryRepository.queryAllByConversationId(conversationId)
+        return springAiChatMemoryRepository.findAll(Example.of(springAiChatMemoryEntity))
                 .stream()
                 .map(this::mapEntityToMessage)
                 .collect(Collectors.toList());
