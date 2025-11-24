@@ -19,14 +19,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AiConfig {
 
-//    @Value("${spring.ai.openai.api-key}")
-//    String apiKey;
-//
-//    @Value("${spring.ai.openai.base-url}")
-//    String baseUrl;
-//
-//    @Value("${spring.ai.openai.embedding.options.model")
-//    String embeddingModel;
+    @Value("${spring.ai.openai.api-key}")
+    String apiKey;
+
+    @Value("${spring.ai.openai.base-url}")
+    String baseUrl;
+
+    @Value("${spring.ai.openai.embedding.options.model")
+    String embeddingModel;
 //
 //    @Autowired
 //    private AgentChatMemory agentChatMemory;
