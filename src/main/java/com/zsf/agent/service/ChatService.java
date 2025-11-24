@@ -30,10 +30,7 @@ public class ChatService {
     public Flux<String> simpleChat(SimpleChatRequest simpleChatRequest){
         System.out.println("Message: " + simpleChatRequest.getMessage());
         System.out.println("Memory ID: " + simpleChatRequest.getMemoryId());
-        List<Message> messages = agentChatMemory.get(simpleChatRequest.getMemoryId());
         Flux<String> call = simpleChatClient.prompt()
-                .system("你是一个智能助手,帮助用户解答问题")
-                .messages(messages)
                 .user(simpleChatRequest.getMessage())
                 .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, simpleChatRequest.getMemoryId()) )
                 .stream()

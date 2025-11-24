@@ -26,6 +26,7 @@ public class ClientConfig {
     @Bean
     ChatClient simpleChatClient(){
         return ChatClient.builder(openAiChatModel)
+                .defaultSystem("你是一个长亮公司的人事、行政助理，根据知识库中的员工手册文档，回答员工的问题，在回答的过程中，只在知识库进行检索，不进行联网查询，避免出现信息不正确的问题")
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(agentChatMemory).build(), // chat-memory advisor
                         QuestionAnswerAdvisor.builder(vectorStore).build() // RAG advisor
