@@ -1,6 +1,7 @@
 package com.zsf.agent.controller;
 
 
+import com.alibaba.fastjson2.JSONObject;
 import com.zsf.agent.entity.SimpleChatRequest;
 import com.zsf.agent.service.ChatService;
 import org.springframework.ai.chat.messages.Message;
@@ -21,6 +22,7 @@ public class ChatController {
 
     @PostMapping(value = "/simpleChat", produces =  "text/stream;charset=UTF-8")
     public Flux<String> simpleChat(@RequestBody SimpleChatRequest simpleChatRequest){
+        System.out.println("simpleChatRequest:"+JSONObject.toJSONString(simpleChatRequest));
         Flux<String> stringFlux = chatService.simpleChat(simpleChatRequest);
         System.out.println(stringFlux.toString());
         return stringFlux;

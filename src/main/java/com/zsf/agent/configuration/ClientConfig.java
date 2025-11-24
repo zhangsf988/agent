@@ -1,5 +1,6 @@
 package com.zsf.agent.configuration;
 
+import com.zsf.agent.entity.AgentChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
@@ -18,7 +19,7 @@ public class ClientConfig {
     @Autowired
     OpenAiChatModel openAiChatModel;
     @Autowired
-    ChatMemory chatMemory;
+    AgentChatMemory agentChatMemory;
     @Autowired
     VectorStore vectorStore;
     @Autowired
@@ -34,7 +35,7 @@ public class ClientConfig {
     ChatClient simpleChatClient(){
         return ChatClient.builder(openAiChatModel)
                 .defaultAdvisors(
-                        MessageChatMemoryAdvisor.builder(chatMemory).build(), // chat-memory advisor
+                        MessageChatMemoryAdvisor.builder(agentChatMemory).build(), // chat-memory advisor
                         QuestionAnswerAdvisor.builder(vectorStore).build() // RAG advisor
                 )
                 .build();
