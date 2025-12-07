@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import javax.tools.Tool;
+
 @Component
 public class ClientConfig {
     @Autowired
@@ -24,14 +26,18 @@ public class ClientConfig {
     AgentChatMemory agentChatMemory;
     @Autowired
     VectorStore vectorStore;
-    
+    @Autowired
+    ToolConfig toolConfig;
+
+
+
     @Bean
     ChatClient simpleChatClient() {
         return ChatClient.builder(openAiChatModel)
                 .defaultSystem("你是一个长亮公司的人事、行政助理，如果用户要询问员工手册相关内容，则根据知识库中的员工手册文档，回答员工的问题，在回答的过程中，" +
                         "只在知识库进行检索，不进行联网查询，避免出现信息不正确的问题。" +
                         "如果用户是有其他申请，则配合用户处理业务")
-                .defaultTools(new ToolConfig())
+                .defaultTools(toolConfig)
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(agentChatMemory).build(), // chat-memory advisor
                         QuestionAnswerAdvisor.builder(vectorStore).searchRequest(SearchRequest

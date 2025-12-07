@@ -1,7 +1,9 @@
 package com.zsf.agent.configuration;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.zsf.agent.entity.EmployeeApproval;
 import com.zsf.agent.service.EmployeeApprovalService;
+import io.grpc.internal.JsonUtil;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +24,9 @@ public class ToolConfig {
 
     @Tool(description = "记录一个公司职工提交的审批流程，比如离职、申请宿舍等申请。保存职工的姓名、年龄、司龄、性别、审批事项、原因")
     public String saveEmployeeApproval(String name, int age, BigDecimal serviceYears, String gender, String approvalItem, String reason) {
+        System.out.println("保存职工的审批信息：" + name + " " + age + " " + serviceYears + " " + gender + " " + approvalItem + " " + reason);
         EmployeeApproval employeeApproval = new EmployeeApproval(name, age, serviceYears, gender, approvalItem, reason);
+        System.out.println(JSONObject.toJSONString(employeeApproval));
         employeeApprovalService.saveApproval(employeeApproval);
         return "已保存职工的审批信息：" + name + " " + age + " " + serviceYears + " " + gender + " " + approvalItem + " " + reason;
     }
