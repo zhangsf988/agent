@@ -13,6 +13,7 @@ import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class ChatService {
     public Flux<String> simpleChat(SimpleChatRequest simpleChatRequest){
         System.out.println("Message: " + simpleChatRequest.getMessage());
         System.out.println("Memory ID: " + simpleChatRequest.getMemoryId());
+//        List<Document> documents = vectorStore.similaritySearch(SearchRequest.builder().query(simpleChatRequest.getMessage()).topK(5).similarityThreshold(0.1).build());
+//        System.out.println("doucuments:"+JSONObject.toJSONString(documents));
         Flux<String> call = simpleChatClient.prompt()
                 .user(simpleChatRequest.getMessage())
                 .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, simpleChatRequest.getMemoryId()))
@@ -44,7 +47,7 @@ public class ChatService {
                 .content();
         return call;
     }
-    
+
     public List<Message> getHistory(String conversationId) {
         return agentChatMemory.get(conversationId);
     }

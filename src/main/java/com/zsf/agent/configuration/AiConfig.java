@@ -37,14 +37,14 @@ public class AiConfig {
 //        return agentChatMemory;
 //    }
 
-    @Bean
-    public EmbeddingModel embeddingModel() {
-        OpenAiApi openAiApi = new OpenAiApi.Builder()
-                .baseUrl(baseUrl)
-                .apiKey(apiKey)
-                .build();
-        OpenAiEmbeddingOptions openAiEmbeddingOptions = new OpenAiEmbeddingOptions();
-        openAiEmbeddingOptions.setModel(embeddingModel);
-        return new OpenAiEmbeddingModel(openAiApi, MetadataMode.EMBED,openAiEmbeddingOptions);
-    }
+//    @Bean
+//    public EmbeddingModel embeddingModel() {
+//        OpenAiApi openAiApi = new OpenAiApi.Builder()
+//                .baseUrl(baseUrl)
+//                .apiKey(apiKey)
+//                .build();
+//        OpenAiEmbeddingOptions openAiEmbeddingOptions = new OpenAiEmbeddingOptions();
+//        openAiEmbeddingOptions.setModel(embeddingModel);
+//        return new OpenAiEmbeddingModel(openAiApi, MetadataMode.EMBED,openAiEmbeddingOptions);
+//    }
 }
